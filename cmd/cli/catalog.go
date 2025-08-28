@@ -6,9 +6,9 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/complytime/gemara2oscal/controls"
 	oscalTypes "github.com/defenseunicorns/go-oscal/src/types/oscal-1-1-3"
 	"github.com/goccy/go-yaml"
-	"github.com/jpower432/gemara2oscal/controls"
 	"github.com/ossf/gemara/layer1"
 	"github.com/spf13/cobra"
 )
@@ -33,7 +33,7 @@ func NewCatalogCommand() *cobra.Command {
 				return err
 			}
 
-			catalog, err := controls.ToCatalog(layer1Doc)
+			catalog, err := controls.ToOSCALCatalog(layer1Doc)
 			if err != nil {
 				return err
 			}
@@ -51,6 +51,6 @@ func NewCatalogCommand() *cobra.Command {
 	}
 
 	flags := command.Flags()
-	flags.StringVarP(&guidancePath, "guidance-path", "g", "./guidance/800-161.yml", "Path to L1 guidance doc to transform")
+	flags.StringVarP(&guidancePath, "guidance-path", "g", "", "Path to L1 guidance doc to transform")
 	return command
 }

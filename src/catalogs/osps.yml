@@ -24,6 +24,24 @@ metadata:
       title: Cybersecurity Supply Chain Risk Management Practices for Systems and Organizations
       version: "1.1"
       url: https://csrc.nist.gov/pubs/sp/800/161/r1/upd1/final
+    - id: SSDF
+      title: NIST Secure Software Development Framework (SP 800-218)
+      version: "1.1"
+      url: https://csrc.nist.gov/pubs/sp/800/218/final
+      description: |
+        The Secure Software Development Framework (SSDF) is a set of fundamental,
+        sound, and secure software development practices based on established
+        secure software development practice documents from organizations such as
+        BSA, OWASP, and SAFECode. Few software development life cycle (SDLC) models
+        explicitly address software security in detail, so practices like those in
+        the SSDF need to be added to and integrated with each SDLC implementation.
+        Following the SSDF practices should help software producers reduce the
+        number of vulnerabilities in released software, reduce the potential impact
+        of the exploitation of undetected or unaddressed vulnerabilities, and
+        address the root causes of vulnerabilities to prevent recurrences. Also,
+        because the SSDF provides a common language for describing secure software
+        development practices, software producers and acquirers can use it to foster
+        their communications for procurement processes and other management activities.
 control-families:
   - title: Quality
     description: |
@@ -46,28 +64,28 @@ control-families:
           branch.
         guideline-mappings:
           - reference-id: BPB
-            identifiers:
-              - B-G-3
+            entries:
+              - reference-id: B-G-3
           - reference-id: Scorecard
-            identifiers:
-              - Code-Review
+            entries:
+              - reference-id:  Code-Review
           - reference-id: PSSCRM
-            identifiers:
-              - G2.4
-              - P3.3
-              - P3.5
+            entries:
+              - reference-id: G2.4
+              - reference-id: P3.3
+              - reference-id: P3.5
           - reference-id: PCIDSS
-            identifiers:
-              - 6.2.3.1
-              - 6.4.2
-              - 6.5.4
+            entries:
+              - reference-id: 6.2.3.1
+              - reference-id: 6.4.2
+              - reference-id: 6.5.4
           - reference-id: 800-161
-            identifiers:
-              - AC-5
-              - AU-6
-              - PL-8
-              - SA-15
-              - SR-3
+            entries:
+              - reference-id: AC-5
+              - reference-id: AU-6
+              - reference-id: PL-8
+              - reference-id: SA-15
+              - reference-id: SR-3
         assessment-requirements:
           - id: OSPS-QA-07.01
             text: |
@@ -82,7 +100,6 @@ control-families:
               primary branch. This can be achieved by requiring a pull request to be
               reviewed and approved by at least one other contributor before it can
               be merged.
-            # Note: this below section has been added for testing purposes
             recommended-parameters:
               - id: main_branch_min_approvals
                 description: Minimum approvals on the default branch

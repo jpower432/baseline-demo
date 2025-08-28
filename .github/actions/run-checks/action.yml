@@ -23,5 +23,5 @@ runs:
 
     - name: Evaluate
       run:
-        opa eval -b my-compliance-bundle.tar.gz --input input.json 'data.branch_protection' | tee policy-results/opa/github-branch-protection.json
+        opa eval -b ospsb.tar.gz --input input.json 'data.branch_protection' | tee policy-results/opa/github-branch-protection.json
       shell: bash

@@ -6,9 +6,9 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/complytime/gemara2oscal/component"
 	oscalTypes "github.com/defenseunicorns/go-oscal/src/types/oscal-1-1-3"
 	"github.com/goccy/go-yaml"
-	"github.com/jpower432/gemara2oscal/component"
 	"github.com/ossf/gemara/layer2"
 	"github.com/ossf/gemara/layer3"
 	"github.com/ossf/gemara/layer4"
@@ -37,7 +37,7 @@ func NewComponentCommand() *cobra.Command {
 				return err
 			}
 
-			var evaluationSuites []layer4.ControlEvaluation
+			var allPlans []layer4.AssessmentPlan
 			err = filepath.Walk(evaluationsPath, func(path string, info os.FileInfo, err error) error {
 
 				if info.IsDir() {
@@ -49,18 +49,18 @@ func NewComponentCommand() *cobra.Command {
 					return err
 				}
 
-				var evaluations []layer4.ControlEvaluation
-				err = yaml.Unmarshal(content, &evaluations)
+				var assessmentPlans []layer4.AssessmentPlan
+				err = yaml.Unmarshal(content, &assessmentPlans)
 				if err != nil {
 					return err
 				}
 
-				evaluationSuites = append(evaluationSuites, evaluations...)
+				allPlans = append(allPlans, assessmentPlans...)
 				return nil
 			})
 
 			builder = builder.AddTargetComponent(targetComponent, componentType, layer2Catalog)
-			builder = builder.AddValidationComponent(validatorID, evaluationSuites)
+			builder = builder.AddValidationComponent(validatorID, allPlans)
 
 			compDef := builder.Build()
 
@@ -95,11 +95,11 @@ func NewComponentCommand() *cobra.Command {
 	}
 
 	flags := command.Flags()
-	flags.StringVarP(&catalogPath, "catalog-path", "c", "./catalogs/osps.yml", "Path to L2 catalog to transform")
-	flags.StringVarP(&evaluationsPath, "evaluations-path", "e", "./evaluations", "Path to Layer 4 evaluation plans")
+	flags.StringVarP(&catalogPath, "catalog-path", "c", "./src/catalogs/osps.yml", "Path to L2 catalog to transform")
+	flags.StringVarP(&evaluationsPath, "evaluations-path", "e", "./src/plans", "Path to Layer 4 evaluation plans")
 	flags.StringVarP(&targetComponent, "target-component", "t", "", "Title for target component for evaluation")
 	flags.StringVar(&componentType, "component-type", "software", "Component type (based on valid OSCAL component types)")
 	flags.StringVarP(&validatorID, "validator-id", "v", "", "Validation plugin id")
-	flags.StringVarP(&policyPath, "policy-path", "p", "./policy.yaml", "Path to Layer 3 policy")
+	flags.StringVarP(&policyPath, "policy-path", "p", "./src/policy.yaml", "Path to Layer 3 policy")
 	return command
 }
