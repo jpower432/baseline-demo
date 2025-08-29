@@ -14,7 +14,7 @@ scope:
   providers:
     - "github"
 guidance-references:
-  - reference-id: "NIST-SP-800-161r1-custom"
+  - reference-id: "SSDF"
     in-scope:
       technologies:
         - "github-repo"
@@ -25,6 +25,6 @@ control-references:
         - "github-repo"
     parameter-modifications:
       - target-id: "main_branch_min_approvals"
-        modification-type: "loosening"
-        modification-rationale: "This repository is solo-maintained"
-        value: 0
+        modification-type: "increase-strictness"
+        modification-rationale: "My organization require two approvals from non-author contributors"
+        value: 2
