@@ -5,12 +5,15 @@ runs:
   using: "composite"
   steps:
     - name: Setup snappy
-      uses: carabiner-dev/actions/install/snappy@HEAD
+      uses: carabiner-dev/actions/install/snappy@e1c6f772cc46a2dce1def4b8a1545249b3af757e
 
     - name: Setup OPA
       uses: open-policy-agent/setup-opa@v2
       with:
         version: latest
+
+    - name: Setup ORAS CLI
+      uses: oras-project/setup-oras@8d34698a59f5ffe24821f0b48ab62a3de8b64b20 # v1.2.3
 
     - name: Retrieve data
       env:
@@ -21,7 +24,15 @@ runs:
         snappy snap builtin:github/branch-rules.yaml -v ORG="$ORG" -v REPO="$REPO" -v BRANCH='main' > input.json
       shell: bash
 
+    - name: Pull policy bundle
+      env:
+        ORG: ${{ github.event.repository.owner.login }}
+      run: |
+        oras login ghcr.io
+        oras pull -o ./bundle "ghcr.io/$ORG/opa-bundle:dev"
+      shell: bash
+
     - name: Evaluate
       run:
-        opa eval -b ospsb.tar.gz --input input.json 'data.branch_protection' | tee policy-results/opa/github-branch-protection.json
+        opa eval -b ./bundle --input input.json 'data.branch_protection' | tee policy-results/opa/github-branch-protection.json
       shell: bash

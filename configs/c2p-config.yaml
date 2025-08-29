@@ -1,7 +1,7 @@
 plugins:
   opa:
-    policy-templates: ./policy-templates/opa
+    policy-templates: ./policy-templates/develop/opa
     policy-output: ./policies/opa
     policy-results: ./policy-results/opa
-    bundle: ospsb.tar.gz
+    bundle: bundle.tar.gz
     bundle-revision: {{ RUNID }}
