@@ -35,7 +35,7 @@ jobs:
       - name: Create Component Definition
         run: |
           go build -C cmd/  -o ../gemara-transformer
-          ./gemara-transformer component -t "GitHub Repository" -v "opa" > component-definition.json
+          ./gemara-transformer plan -t "GitHub Repository" -v "opa" -r SSDF > assessment-plan.json
 
       - name: Setup c2pcli
         uses: jpower432/c2p-actions/actions/setup-c2pcli@HEAD
@@ -48,18 +48,23 @@ jobs:
           sed -i "s/{{ RUNID }}/${{ github.run_id }}/g" configs/c2p-config.yaml
 
       - name: Generate policy bundle
-        run: c2pcli oscal2policy -c configs/c2p-config.yaml -d component-definition.json -n SSDF -p $(go env GOPATH)/bin
+        run: c2pcli oscal2policy -c configs/c2p-config.yaml -a assessment-plan.json -p $(go env GOPATH)/bin
 
       - uses: actions/upload-artifact@v4
         with:
           name: policy-bundle
-          path: my-compliance-bundle.tar.gz
+          path: ospsb.tar.gz
 
       - uses: ./.github/actions/run-checks
 
       - name: Aggregate component results
-        run: c2pcli result2oscal -c configs/c2p-config.yaml -d component-definition.json -n SSDF -p $(go env GOPATH)/bin
+        run: c2pcli result2oscal -c configs/c2p-config.yaml -a assessment-plan.json -p $(go env GOPATH)/bin
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: assessment-plan
+          path: assessment-plan.json
 
       # Post summary on GitHub action summary
       - name: Summary
-        run: c2pcli oscal2posture -c configs/c2p-config.yaml -r assessment-results.json -d component-definition.json -n SSDF --catalog catalogs/catalog.json >> $GITHUB_STEP_SUMMARY
+        run: c2pcli oscal2posture -c configs/c2p-config.yaml -r assessment-results.json -a assessment-plan.json --catalog catalogs/catalog.json >> $GITHUB_STEP_SUMMARY

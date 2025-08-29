@@ -14,7 +14,7 @@ scope:
   providers:
     - "github"
 guidance-references:
-  - reference-id: "NIST-SP-800-161r1-custom"
+  - reference-id: "800-161"
     in-scope:
       technologies:
         - "github-repo"
