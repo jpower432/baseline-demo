@@ -1,30 +1,66 @@
 metadata:
-  id: "my-org-policy"
-  title: "Example Security Policy"
-  objective: "To ensure all GitHub projects are configured correctly."
+  id: "security-policy-001"
+  title: "Information Security Policy"
+  objective: "An example security policy for baseline demonstration"
   version: "1.0.0"
+  last-modified: "2025-09--08"
+  organization-id: "org-12345"
   contacts:
     author:
       name: "Jenn Power"
       primary: true
-  last-modified: "2025-07-28T18:00:00Z"
+  mapping-references:
+    - id: SSDF
+      title: NIST Secure Software Development Framework (SP 800-218)
+      version: "1.1"
+      url: https://csrc.nist.gov/pubs/sp/800/218/final
+      description: |
+        The Secure Software Development Framework (SSDF) is a set of fundamental,
+        sound, and secure software development practices based on established
+        secure software development practice documents from organizations such as
+        BSA, OWASP, and SAFECode. Few software development life cycle (SDLC) models
+        explicitly address software security in detail, so practices like those in
+        the SSDF need to be added to and integrated with each SDLC implementation.
+        Following the SSDF practices should help software producers reduce the
+        number of vulnerabilities in released software, reduce the potential impact
+        of the exploitation of undetected or unaddressed vulnerabilities, and
+        address the root causes of vulnerabilities to prevent recurrences. Also,
+        because the SSDF provides a common language for describing secure software
+        development practices, software producers and acquirers can use it to foster
+        their communications for procurement processes and other management activities.
+    - id: OSPS-B
+      title: Open Source Project Security Baseline
+      version: "2025-02-25"
+      url: https://baseline.openssf.org/versions/2025-02-25.html
+      description: |
+        The Open Source Project Security (OSPS) Baseline is a set of security criteria that projects 
+        should meet to demonstrate a strong security posture. The controls are organized by maturity level 
+        and category. In the detailed subsections you will find the control, rationale, and details notes.
 scope:
+  boundaries:
+    - "United States"
   technologies:
-    - "github-repo"
+    - "Cloud Computing"
+    - "Mobile Devices"
+    - "Web Applications"
+    - "Database Systems"
   providers:
-    - "github"
+    - "GitHub"
+
 guidance-references:
   - reference-id: "SSDF"
     in-scope:
-      technologies:
-        - "github-repo"
+      boundaries: ["United States"]
+    out-of-scope:
+      boundaries: ["International"]
+
 control-references:
   - reference-id: "OSPS-B"
     in-scope:
-      technologies:
-        - "github-repo"
+      technologies: ["Open Source Projects"]
+      providers: ["GitHub"]
     parameter-modifications:
-      - target-id: "main_branch_min_approvals"
-        modification-type: "increase-strictness"
-        modification-rationale: "My organization requires two approvals from non-author contributors"
-        value: 2
+    - target-id: "main_branch_min_approvals"
+      modification-type: "increase-strictness"
+      modification-rationale: "My organization require two approvals from non-author contributors"
+      value: 2
